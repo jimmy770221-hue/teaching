@@ -3584,44 +3584,52 @@ function zcCard(c, meta, btn){
     btn || null);
 }
 function viewZhChars(){
-  const st = mem.zc = Object.assign({g:1,t:'a',q:'',v:'mix'}, mem.zc||{});
+  const st = mem.zc = Object.assign({g:1,t:'a',q:'',v:'mix',l:'all'}, mem.zc||{});
   const pubs = Object.keys(PUB());
   if (st.v !== 'mix' && !pubs.includes(st.v)) st.v = 'mix';
   const root = el('section',{class:'zhhome'}), box = el('div',{}), info = el('p',{class:'muted'});
+  const lesSel = el('select',{'aria-label':'選課',onchange:e=>{ st.l=e.target.value; save(); draw(); }});
+  const lessonsOf = () => st.v === 'mix' ? book(st.g,st.t).units.map((u,i)=>[String(i), `第${i+1}單元 ${u.title}`]) : ((PUB()[st.v]||{})[`g${st.g}${st.t}`]?.lessons||[]).map((L,i)=>[String(i), `${L.k} ${L.title}`]);
+  const fillLes = () => { const ls = lessonsOf(); if (st.l !== 'all' && !ls.some(x=>x[0]===st.l)) st.l = 'all'; lesSel.replaceChildren(...[['all', st.v==='mix' ? '全部單元' : '全部課次'], ...ls].map(([v,n])=>el('option',{value:v,selected:v===st.l},n))); };
+  const reset = () => { st.l = 'all'; fillLes(); save(); draw(); };
   const hit = (c, q) => !q || c.c===q || (c.zhuyin||'').includes(q) || c.radical===q || (c.words||[]).some(w=>w.includes(q)) || (c.wm||[]).some(w=>w.w.includes(q));
   function draw(){
     const q = st.q.trim();
     if (st.v === 'mix') {
-      const list = []; for (const g of (q ? [1,2,3,4,5,6] : [st.g])) for (const t of (q ? ['a','b'] : [st.t])) book(g,t).units.forEach((u,i) => (u.chars||[]).forEach(c => list.push({c,i,g,t})));
+      const one = st.l !== 'all', all = q && !one;
+      const list = []; for (const g of (all ? [1,2,3,4,5,6] : [st.g])) for (const t of (all ? ['a','b'] : [st.t])) book(g,t).units.forEach((u,i) => { if (one && String(i) !== st.l) return; (u.chars||[]).forEach(c => list.push({c,i,g,t})); });
       const shown = list.filter(x => hit(x.c, q));
-      info.textContent = `${q?'搜尋全部年級：':''}共 ${shown.length} 個生字（三版本共同重點，依本站單元排列）`;
+      info.textContent = `${all?'搜尋全部年級：':''}共 ${shown.length} 個生字（三版本共同重點，依本站單元排列）`;
       box.replaceChildren(el('div',{class:'zchars'}, shown.map(({c,i,g,t}) => zcCard(c, `${CN[g]}年級${t==='a'?'上':'下'} 第${i+1}單元`, el('button',{type:'button',class:'btn',onclick:()=>go('learn',{g,t,u:i})},'到這個單元')))));
       return;
     }
     const P = PUB()[st.v] || {};
-    const books = q ? Object.keys(P).sort() : [`g${st.g}${st.t}`];
+    const one = st.l !== 'all', all = q && !one;
+    const books = all ? Object.keys(P).sort() : [`g${st.g}${st.t}`];
     const parts = []; let n = 0;
     for (const bk of books) {
       const B = P[bk]; if (!B) continue;
-      for (const L of B.lessons) {
+      for (const [li, L] of B.lessons.entries()) {
+        if (one && String(li) !== st.l) continue;
         const cs = L.chars.filter(c => hit(c, q)); if (!cs.length) continue; n += cs.length;
-        parts.push(el('h3',{class:'zc-les'}, `${q ? `${CN[+bk[1]]}年級${bk[2]==='a'?'上':'下'}・` : ''}${L.k}　${L.title}`, el('small',{}, `${cs.length} 字`)),
+        parts.push(el('h3',{class:'zc-les'}, `${all ? `${CN[+bk[1]]}年級${bk[2]==='a'?'上':'下'}・` : ''}${L.k}　${L.title}`, el('small',{}, `${cs.length} 字`)),
           el('div',{class:'zchars'}, cs.map(c => zcCard(c, ''))));
       }
     }
     const B = P[`g${st.g}${st.t}`];
-    info.textContent = q ? `搜尋${st.v}版全部年級：共 ${n} 個生字` : B ? `${st.v}版・${B.year} 學年度・${CN[st.g]}年級${st.t==='a'?'上':'下'}學期：${B.lessons.length} 課、共 ${n} 個生字（生字表由家長整理提供，請以課本為準）` : `${st.v}版${CN[st.g]}年級${st.t==='a'?'上':'下'}學期的生字表還沒有建立。`;
+    info.textContent = all ? `搜尋${st.v}版全部年級：共 ${n} 個生字` : one ? `${st.v}版・${CN[st.g]}年級${st.t==='a'?'上':'下'}學期・${B.lessons[+st.l].k} ${B.lessons[+st.l].title}：共 ${n} 個生字` : B ? `${st.v}版・${B.year} 學年度・${CN[st.g]}年級${st.t==='a'?'上':'下'}學期：${B.lessons.length} 課、共 ${n} 個生字（生字表由家長整理提供，請以課本為準）` : `${st.v}版${CN[st.g]}年級${st.t==='a'?'上':'下'}學期的生字表還沒有建立。`;
     box.replaceChildren(...parts);
   }
   root.append(el('div',{class:'zh-in'},
     el('div',{class:'zh-head'}, el('div',{}, el('h1',{},'生字查詢')), el('button',{type:'button',class:'mh-back',onclick:()=>go('zhhome')},'← 回國語')),
     el('div',{class:'zc-bar'},
-      el('select',{'aria-label':'版本',onchange:e=>{ st.v=e.target.value; save(); draw(); }}, [['mix','三版本共同重點'], ...pubs.map(p=>[p, `${p}版（依課次）`])].map(([v,n])=>el('option',{value:v,selected:v===st.v},n))),
-      el('select',{'aria-label':'年級',onchange:e=>{ st.g=+e.target.value; save(); draw(); }}, [1,2,3,4,5,6].map(g=>el('option',{value:g,selected:g===st.g},`${CN[g]}年級`))),
-      el('select',{'aria-label':'學期',onchange:e=>{ st.t=e.target.value; save(); draw(); }}, [['a','上學期'],['b','下學期']].map(([v,n])=>el('option',{value:v,selected:v===st.t},n))),
+      el('select',{'aria-label':'版本',onchange:e=>{ st.v=e.target.value; reset(); }}, [['mix','三版本共同重點'], ...pubs.map(p=>[p, `${p}版（依課次）`])].map(([v,n])=>el('option',{value:v,selected:v===st.v},n))),
+      el('select',{'aria-label':'年級',onchange:e=>{ st.g=+e.target.value; reset(); }}, [1,2,3,4,5,6].map(g=>el('option',{value:g,selected:g===st.g},`${CN[g]}年級`))),
+      el('select',{'aria-label':'學期',onchange:e=>{ st.t=e.target.value; reset(); }}, [['a','上學期'],['b','下學期']].map(([v,n])=>el('option',{value:v,selected:v===st.t},n))),
+      lesSel,
       el('input',{type:'search',placeholder:'輸入國字、注音、部首或詞語',value:st.q,'aria-label':'搜尋',oninput:e=>{ st.q=e.target.value; save(); draw(); }})),
     info, box));
-  draw(); return root;
+  fillLes(); draw(); return root;
 }
 
 /* 生字格：田字格＋右側直排注音（聲調標在符號右邊，輕聲標在上方） */
