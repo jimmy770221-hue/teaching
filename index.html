@@ -1184,6 +1184,10 @@ textarea.work{font:inherit;font-family:var(--f-mono);font-size:14px;width:100%;m
 .hi-btns{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 @media print{.papertools{display:none}}
 
+.zh-door.z3{--edge:#17764f;background:linear-gradient(140deg,#4fd07a,#1f9a6a)}.zh-door.z3 .zh-sub{color:#17673f}
+.zh-door.z4{--edge:#6a3aa8;background:linear-gradient(140deg,#b98cff,#7b4fd6)}.zh-door.z4 .zh-sub{color:#55309a}
+.zh-door.z5{--edge:#b23a6a;background:linear-gradient(140deg,#ff8fb8,#e0517f)}.zh-door.z5 .zh-sub{color:#9a2a55}
+
 </style>
 
 <div class="page">
@@ -3546,23 +3550,20 @@ function viewZhHome(){
   setSubj('zh');
   let units=0, chars=0, bank=0, reads=0;
   for (const b of Object.values(DATA_ZH)) for (const u of b.units) { units++; chars += (u.chars||[]).length; bank += u.pool.length; reads += (u.readings||[]).length; }
-  const door = (cls, big, sub, items, onclick, mark) => el('button',{type:'button',class:`zh-door ${cls}`,onclick},
+  const door = (cls, big, sub, items, onclick, mark, goTxt) => el('button',{type:'button',class:`zh-door ${cls}`,onclick},
     el('span',{class:'zh-mark','aria-hidden':'true'}, mark), el('span',{class:'zh-big'}, big), el('span',{class:'zh-sub'}, sub),
-    el('ul',{}, items.map(i=>el('li',{},i))), el('span',{class:'zh-go'}, cls==='z1' ? '開始學習 →' : '開始測驗 →'));
+    el('ul',{}, items.map(i=>el('li',{},i))), el('span',{class:'zh-go'}, goTxt || (cls==='z1' ? '開始學習 →' : '開始測驗 →')));
   const pos = mem.pos || [1,'a',0];
   return el('section',{class:'zhhome'}, el('div',{class:'zh-in'},
     el('div',{class:'zh-head'},
       el('div',{}, el('div',{class:'zh-brand'}, '國小國語學習本'), el('h1',{}, '一起快樂學', el('em',{},'國語'), '！'), el('p',{}, '一年級到六年級・融合康軒、南一、翰林三版本的學習重點')),
       el('button',{type:'button',class:'mh-back',onclick:()=>go('portal')},'← 選科目')),
     el('div',{class:'zh-doors'},
+      door('z3','注音教室','一上重點・ㄅㄆㄇ', ['注音大字卡、聽讀音、描寫','拼讀機、四聲練習','翻牌記憶、寶可夢拼音遊戲'], ()=>go('zhuyin'), 'ㄅ', '進入教室 →'),
       door('z1','課程教學講解','生字・語詞・句型・閱讀', ['生字卡：注音、部首、筆畫、造詞','分段講解、範例與隨堂練習','原創閱讀短文與句型練習'], ()=>go('learn',{g:pos[0],t:pos[1],u:pos[2]}), '文'),
-      door('z2','評量測驗','自訂試卷・即時批改', ['選擇、填空、閱讀測驗自由搭配','依題數自動配分，滿分 100','交卷後錯題附完整詳解'], ()=>go('quiz'), '100')),
-    el('button',{type:'button',class:'zh-zy',onclick:()=>go('zhuyin')},
-      el('span',{class:'zh-zy-s','aria-hidden':'true'},'ㄅㄆㄇ'), el('span',{}, el('b',{},'注音教室'), el('small',{},'一上重點：注音大字卡・聽讀音・描寫・拼讀機・四聲・翻牌記憶・寶可夢拼音遊戲')), el('span',{class:'zh-go'},'進入 →')),
-    el('button',{type:'button',class:'zh-zy zh-cx',onclick:()=>go('zhchars')},
-      el('span',{class:'zh-zy-s','aria-hidden':'true'},'查'), el('span',{}, el('b',{},'生字查詢'),el('small',{},'依年級、學期查生字，看注音、部首、造詞、造句')), el('span',{class:'zh-go'},'進入 →')),
-    el('button',{type:'button',class:'zh-zy zh-rd',onclick:()=>go('zhread')},
-      el('span',{class:'zh-zy-s','aria-hidden':'true'},'讀'), el('span',{}, el('b',{},'閱讀小書房'), el('small',{},`今日文章：《${todayArticle().title}》・共 ${READ().length} 篇有注音的短文，每天一篇不重複`)), el('span',{class:'zh-go'},'進入 →')),
+      door('z5','生字查詢','年級・學期・搜尋', ['依年級、學期瀏覽全部生字','輸入國字、注音、部首或詞語搜尋','看注音、部首、筆畫、造詞、造句'], ()=>go('zhchars'), '查', '開始查詢 →'),
+      door('z2','評量測驗','自訂試卷・即時批改', ['選擇、填空、閱讀測驗自由搭配','依題數自動配分，滿分 100','交卷後錯題附完整詳解'], ()=>go('quiz'), '100'),
+      door('z4','閱讀小書房','每天一篇・有注音', [`今日文章：《${todayArticle().title}》`, `共 ${READ().length} 篇有注音的短文`, '讀完回答問題，每天一篇不重複'], ()=>go('zhread'), '讀', '開始閱讀 →')),
     el('div',{class:'zh-gh'}, '選擇年級，開始學習！'),
     el('div',{class:'zh-grades'}, [1,2,3,4,5,6].map(g => el('button',{type:'button',class:`zh-grade c${g}`,onclick:()=>go('learn',{g,t:'a',u:0})},
       el('b',{}, `${CN[g]}年級`), el('small',{}, `${book(g,'a').units.length + book(g,'b').units.length} 個單元`)))),
