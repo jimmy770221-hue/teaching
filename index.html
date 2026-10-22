@@ -725,6 +725,19 @@ textarea.work{font:inherit;font-family:var(--f-mono);font-size:14px;width:100%;m
   .gm-battle .gm-bar .ic{width:calc(1.9*var(--cq))}
 }
 
+/* 戰鬥畫面：四個選項排成一行，面板變矮，角色與怪物往下站回草地 */
+@media (min-width:761px) and (min-aspect-ratio:1/1){
+  .gm-battle .gm-opts{grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(.8*var(--cq))}
+  .gm-battle .gm-opts button{font-size:calc(1.4*var(--cq));gap:calc(.6*var(--cq));border-width:calc(1.1*var(--cq)) calc(1.7*var(--cq));border-image-width:calc(1.1*var(--cq)) calc(1.7*var(--cq));line-height:1.25}
+  .gm-battle .gm-opts button b{width:1.6em;height:1.6em}
+  .gm-battle .gm-stage .gm-panel{left:5%;right:5%;bottom:1.6%}
+  .gm-battle .gm-hero{bottom:27%}
+  .gm-battle .gm-mon{bottom:27%}
+  .gm-battle .gm-mon.fly{bottom:38%}
+  .gm-battle.w2 .gm-hero,.gm-battle.w2 .gm-mon:not(.fly),.gm-battle.w3 .gm-hero,.gm-battle.w3 .gm-mon:not(.fly){bottom:27%}
+  .gm-battle .gm-scene::after{height:38%}
+}
+
 /* ---------- 科目首頁：底圖＋三個立體浮凸的科目按鍵 ---------- */
 .portal{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:-16px;margin-bottom:-64px;min-height:100vh;display:grid;place-items:center;overflow:hidden;background:#9fd3f5;font-family:'Noto Sans TC',sans-serif}
 /* the whole picture always fits the window; any space around it is filled with a soft, blurred copy */
@@ -1476,7 +1489,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = 'xxt-70824ae10a', upd = document.getElementById('pwa-upd');
+  var BUILD = 'xxt-a9ca3bcc80', upd = document.getElementById('pwa-upd');
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
     fetch('sw.js?t=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
