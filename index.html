@@ -659,6 +659,39 @@ textarea.work{font:inherit;font-family:var(--f-mono);font-size:14px;width:100%;m
 /* iPad / 舊版 Safari：固定 16:9 舞台，以可見高度（dvh）計算，避免被網址列裁切 */
 @supports (height:100dvh){ .gm-mapview{height:100dvh} .gm-scr{width:min(100vw,calc(100dvh * 16 / 9))} }
 
+/* 闖關地圖：頂欄、模式、世界按鈕與關卡介紹縮小（橫向／平板／電腦） */
+@media (min-width:761px) and (min-aspect-ratio:1/1){
+  .gm-scr .gm-top{height:calc(6.4*var(--cq));padding:0 calc(1.4*var(--cq))}
+  .gm-scr .gm-logo{height:calc(5.6*var(--cq));margin-top:calc(.4*var(--cq))}
+  .gm-scr .gm-hbtn{font-size:calc(.95*var(--cq));padding:calc(.4*var(--cq)) calc(.8*var(--cq))}
+  .gm-scr .gm-hbtn svg,.gm-scr .gm-hbtn .ic{width:calc(1.3*var(--cq));height:calc(1.3*var(--cq))}
+  .gm-scr .gm-pill{font-size:calc(1.1*var(--cq));padding:calc(.25*var(--cq)) calc(.9*var(--cq)) calc(.25*var(--cq)) calc(.4*var(--cq))}
+  .gm-scr .gm-pill .ic,.gm-scr .gm-pill svg{width:calc(1.5*var(--cq));height:calc(1.5*var(--cq))}
+  .gm-scr .gm-modes{top:calc(7.4*var(--cq));width:calc(42*var(--cq));gap:calc(.9*var(--cq))}
+  .gm-scr .gm-modes button{padding:calc(.3*var(--cq)) calc(.8*var(--cq));gap:calc(.7*var(--cq));border-radius:calc(.8*var(--cq))}
+  .gm-scr .gm-modes .mi{font-size:calc(1.7*var(--cq))}
+  .gm-scr .gm-modes b{font-size:calc(1.25*var(--cq))}
+  .gm-scr .gm-modes small{font-size:calc(.75*var(--cq))}
+  .gm-scr .gm-worlds{top:calc(12*var(--cq));width:calc(54*var(--cq));gap:calc(.9*var(--cq))}
+  .gm-scr .gm-world{padding:calc(.3*var(--cq)) calc(.6*var(--cq)) calc(.3*var(--cq)) calc(.3*var(--cq));gap:calc(.6*var(--cq));border-radius:calc(.8*var(--cq))}
+  .gm-scr .gm-world .th{width:calc(4.4*var(--cq))}
+  .gm-scr .gm-world b{font-size:calc(1.05*var(--cq))}
+  .gm-scr .gm-world small{font-size:calc(.75*var(--cq))}
+  .gm-scr .gm-term{top:calc(7.4*var(--cq));right:calc(1.4*var(--cq))}
+  .gm-scr .gm-term button{font-size:calc(.9*var(--cq));padding:calc(.35*var(--cq)) calc(.9*var(--cq))}
+  .gm-scr .gm-info{left:calc(8*var(--cq));right:calc(8*var(--cq));bottom:calc(.9*var(--cq));gap:calc(1.2*var(--cq));padding:calc(.6*var(--cq)) calc(1.2*var(--cq));border-radius:calc(1*var(--cq))}
+  .gm-scr .gm-info .th{width:calc(8.6*var(--cq))}
+  .gm-scr .gm-info h2{font-size:calc(1.5*var(--cq));margin-bottom:calc(.15*var(--cq))}
+  .gm-scr .gm-info p{font-size:calc(.82*var(--cq))}
+  .gm-scr .gm-info .mut{margin-top:calc(.25*var(--cq));padding-top:calc(.25*var(--cq))}
+  .gm-scr .gm-info .ach{padding:0 calc(1*var(--cq))}
+  .gm-scr .gm-info .ach small{font-size:calc(.8*var(--cq))}
+  .gm-scr .gm-info .ach img{width:calc(2.5*var(--cq))}
+  .gm-scr .gm-modes button,.gm-scr .gm-world{line-height:1.15}
+  .gm-scr .gm-modes small,.gm-scr .gm-world small{display:block;line-height:1.2}
+  .gm-scr .gm-go{width:calc(16*var(--cq));font-size:calc(1.5*var(--cq))}
+}
+
 /* ---------- 科目首頁：底圖＋三個立體浮凸的科目按鍵 ---------- */
 .portal{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:-16px;margin-bottom:-64px;min-height:100vh;display:grid;place-items:center;overflow:hidden;background:#9fd3f5;font-family:'Noto Sans TC',sans-serif}
 /* the whole picture always fits the window; any space around it is filled with a soft, blurred copy */
@@ -1410,7 +1443,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = 'xxt-4d2d2e9eac', upd = document.getElementById('pwa-upd');
+  var BUILD = 'xxt-2aba7b30e1', upd = document.getElementById('pwa-upd');
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
     fetch('sw.js?t=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
