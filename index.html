@@ -1576,6 +1576,12 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
 .en-trnavs{display:flex;gap:8px;flex-wrap:wrap}
 .en-trnav.next{background:#e55a2b;color:#fff;border-color:#c9461c}
 .en-trnav:disabled{opacity:.4}
+/* 手機／平板橫放（高度矮）：三欄並排，描寫框依螢幕高度縮放，整個框都看得到、不超出邊界 */
+@media (max-height:560px) and (orientation:landscape){
+  .en-lcard{grid-template-columns:auto minmax(0,1fr) auto;gap:14px;padding:12px}
+  .en-lbig{font-size:64px}
+  .en-tracebox .zy-canvas.en-canvas,.zy-canvas.en-canvas{width:min(calc(100vh - 150px),300px);min-width:150px;max-width:300px;margin:0}
+}
 
 </style>
 
@@ -1623,7 +1629,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = 'xxt-8f759fb8f6', upd = document.getElementById('pwa-upd');
+  var BUILD = 'xxt-d3f3102827', upd = document.getElementById('pwa-upd');
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
     fetch('sw.js?t=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
