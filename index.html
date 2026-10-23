@@ -1582,6 +1582,12 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   .en-lbig{font-size:64px}
   .en-tracebox .zy-canvas.en-canvas,.zy-canvas.en-canvas{width:min(calc(100vh - 150px),300px);min-width:150px;max-width:300px;margin:0}
 }
+/* 寬螢幕：三欄靠攏置中，中間不留大片空白 */
+@media (min-width:901px){.en-lcard{grid-template-columns:auto minmax(0,340px) auto;justify-content:center;gap:36px}}
+@media (max-height:560px) and (orientation:landscape){.en-lcard{grid-template-columns:auto minmax(0,300px) auto;justify-content:center;gap:16px}}
+@media (min-width:901px){.en-lcard{width:fit-content;max-width:100%;margin:0 auto;padding:18px 30px}}
+@media (min-width:901px){.en-lcard{grid-template-columns:auto auto auto;gap:28px}.en-linfo{max-width:300px}}
+@media (max-height:560px) and (orientation:landscape){.en-lcard{grid-template-columns:auto auto auto}}
 
 </style>
 
@@ -1629,7 +1635,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = 'xxt-d3f3102827', upd = document.getElementById('pwa-upd');
+  var BUILD = 'xxt-d326ee59b1', upd = document.getElementById('pwa-upd');
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
     fetch('sw.js?t=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
