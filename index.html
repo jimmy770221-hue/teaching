@@ -1567,6 +1567,11 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
 @media (max-width:900px){.en-lcard{grid-template-columns:1fr}.zy-canvas.en-canvas{max-width:600px}}
 
 .en-abc button b,.en-abc button span{font-family:'XXTAbc','Andika','Noto Sans TC',sans-serif;font-weight:700}
+/* 描寫框縮小：依螢幕寬、高自動調整（手機直放／橫放、平板、電腦都適用） */
+.en-tracebox .zy-canvas.en-canvas,.zy-canvas.en-canvas{width:min(100%,340px,52vh);max-width:340px;min-width:200px;margin:0 auto 0 0}
+.en-lcard{grid-template-columns:auto minmax(0,1fr) minmax(260px,340px)}
+@media (max-width:900px){.en-lcard{grid-template-columns:1fr}.en-tracebox .zy-canvas.en-canvas,.zy-canvas.en-canvas{width:min(100%,320px,50vh);max-width:320px;margin:0 auto}}
+@media (max-height:520px) and (orientation:landscape){.en-tracebox .zy-canvas.en-canvas,.zy-canvas.en-canvas{width:min(100%,260px,62vh)}}
 
 </style>
 
@@ -1614,7 +1619,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = 'xxt-c8862095d6', upd = document.getElementById('pwa-upd');
+  var BUILD = 'xxt-b7b9354550', upd = document.getElementById('pwa-upd');
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
     fetch('sw.js?t=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
