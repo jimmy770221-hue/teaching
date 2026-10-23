@@ -1846,6 +1846,10 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
 @media (max-width:400px){.kgx-bar{grid-template-columns:1fr 1fr!important;row-gap:4px}.kgx-bar .kgx-title{grid-column:1/-1!important;grid-row:2!important}.kgx-bar>.kg-home2{justify-self:end}.kgx-title img{height:54px}}
 .kg-book.cov{overflow:visible;border-radius:0}
 .kg-book.cov img{border-radius:clamp(14px,2.4vw,22px);border:3px solid #fff}
+.kgx-readhead .kg-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:640px;margin:0}
+.kgx-readhead .kg-chip{justify-content:center;white-space:nowrap;padding-left:10px;padding-right:10px}
+@media (min-width:1000px){.kgx-readhead .kg-chips{grid-template-columns:repeat(6,minmax(0,1fr));max-width:none;gap:8px}}
+.kgp-book .kg-shelfh{margin-left:0}
 
 </style>
 
@@ -1893,7 +1897,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = 'xxt-7d0d8ae2f1', upd = document.getElementById('pwa-upd');
+  var BUILD = 'xxt-a6aba67753', upd = document.getElementById('pwa-upd');
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
     fetch('sw.js?t=' + Date.now(), {cache: 'no-store'}).then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
