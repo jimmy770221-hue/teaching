@@ -1,11 +1,11 @@
 // 星星小學堂：離線使用。第一次打開會把整個程式存進裝置；之後打開都用裝置裡的版本（沒網路也能開），
 // 有網路時在背景下載新版，下次打開就是新版。
-const CACHE = 'xxt-24127ead3b';
-const SIZE = 1327761;
+const CACHE = 'xxt-bb104bdec8';
+const SIZE = 1328552;
 const XF = ["x/01f3fe0040cc.bin", "x/340d379f87fe.bin", "x/846d404aee65.bin", "x/e2ae832cd858.bin", "x/d75817ac054a.bin", "x/7110c0273a16.bin", "x/c575f544bf02.bin", "x/0e17d20d97a5.bin", "x/cbdf9fd7e347.bin", "x/b6677bebaec7.bin"];
 const CORE = ['index.html', 'kai.woff2', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open('xmedia').then(c => Promise.all(XF.map(u => c.match(u).then(hit => hit || fetch(u).then(r => { if (r.ok) return c.put(u, r); }))))).catch(() => {}).then(() => caches.open(CACHE)).then(c => Promise.all(CORE.map(u => c.match(u).then(hit => hit || fetch(new Request(u, {cache: 'reload'})).then(r => { if (!r.ok) throw new Error(u); return c.put(u, r); }))))).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open('xmedia').then(c => Promise.all(XF.map(u => c.match(u).then(hit => hit || fetch(u).then(r => { if (r.ok) return c.put(u, r); }))))).catch(() => {}).then(() => caches.open(CACHE)).then(c => Promise.all(CORE.map(u => c.match(u).then(hit => hit || fetch(new Request(u === 'index.html' ? 'index.html?t=' + Date.now() : u, {cache: 'reload'})).then(r => { if (!r.ok) throw new Error(u); return c.put(u, r); }))))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('xxt-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -20,7 +20,7 @@ self.addEventListener('fetch', e => {
   if (r.mode === 'navigate' || (url.origin === location.origin && /\/(index\.html)?$/.test(url.pathname))) {
     e.respondWith(caches.open(CACHE).then(async c => {
       const hit = await c.match('index.html');
-      const net = fetch(new Request('index.html', {cache: 'no-cache'})).then(res => { if (res.ok) c.put('index.html', res.clone()); return res; });
+      const net = fetch(new Request('index.html?t=' + Date.now(), {cache: 'no-store'})).then(res => { if (res.ok) c.put('index.html', res.clone()); return res; });
       if (hit) { e.waitUntil(net.catch(() => {})); return hit; }
       return net.catch(() => offlinePage());
     }));
