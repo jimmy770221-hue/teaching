@@ -27,8 +27,9 @@ self.addEventListener('fetch', e => {
   }
   if (url.origin === location.origin && /\/books\/[^/]+$/.test(url.pathname)) {   // 繪本內頁：圖不常變，優先用裝置裡的；json 每次背景更新
     e.respondWith(caches.open('xmedia').then(async c => {
-      const hit = await c.match(r), net = fetch(r).then(res => { if (res && res.ok) c.put(r, res.clone()); return res; });
-      if (hit) { if (/\.json$/.test(url.pathname)) e.waitUntil(net.catch(() => {})); return hit; }
+      const isJ = /\.json$/.test(url.pathname), hit = await c.match(r), net = fetch(isJ ? new Request(r, {cache: 'no-cache'}) : r).then(res => { if (res && res.ok) c.put(r, res.clone()); return res; });
+      if (hit && isJ) return net.catch(() => hit);   // json（文字框位置）網路優先，離線才用舊的
+      if (hit) return hit;
       return net.catch(() => new Response('', {status: 504}));
     }));
     return;
