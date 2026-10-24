@@ -1,10 +1,11 @@
 // 星星小學堂：離線使用。第一次打開會把整個程式存進裝置；之後打開都用裝置裡的版本（沒網路也能開），
 // 有網路時在背景下載新版，下次打開就是新版。
-const CACHE = 'xxt-c499dcd790';
-const SIZE = 9071831;
+const CACHE = 'xxt-f5611bcfe9';
+const SIZE = 2249888;
+const XF = ["x/01f3fe0040cc.bin", "x/340d379f87fe.bin", "x/846d404aee65.bin", "x/e2ae832cd858.bin", "x/7110c0273a16.bin", "x/c575f544bf02.bin", "x/0e17d20d97a5.bin", "x/cbdf9fd7e347.bin", "x/b6677bebaec7.bin"];
 const CORE = ['index.html', 'kai.woff2', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => Promise.all(CORE.map(u => c.match(u).then(hit => hit || fetch(new Request(u, {cache: 'reload'})).then(r => { if (!r.ok) throw new Error(u); return c.put(u, r); }))))).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open('xmedia').then(c => Promise.all(XF.map(u => c.match(u).then(hit => hit || fetch(u).then(r => { if (r.ok) return c.put(u, r); }))))).catch(() => {}).then(() => caches.open(CACHE)).then(c => Promise.all(CORE.map(u => c.match(u).then(hit => hit || fetch(new Request(u, {cache: 'reload'})).then(r => { if (!r.ok) throw new Error(u); return c.put(u, r); }))))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('xxt-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -25,9 +26,9 @@ self.addEventListener('fetch', e => {
     }));
     return;
   }
-  if (url.origin === location.origin && /\/m\/[^/]+\.(mp3|webp|png|jpg)$/.test(url.pathname)) {   // 語音、圖片：檔名就是內容雜湊，存過就永遠用裝置裡的
+  if (url.origin === location.origin && /\/(m|x|strokes)\/[^/]+\.(mp3|webp|png|jpg|bin|json)$/.test(url.pathname) && !/\/m\/index\.json$/.test(url.pathname)) {   // 語音、圖片、資料檔、筆順：不常變，存進不會隨版本清掉的 xmedia   // 語音、圖片：檔名就是內容雜湊，存過就永遠用裝置裡的
     e.respondWith(caches.open('xmedia').then(async c => {
-      const hit = await c.match(url.pathname.replace(/^.*\/m\//, 'm/')) || await c.match(r);
+      const hit = await c.match(r, {ignoreSearch: true});
       if (hit) return hit;
       return fetch(r).then(res => { if (res && res.ok) c.put(r, res.clone()); return res; }).catch(() => new Response('', {status: 504}));
     }));
