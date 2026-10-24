@@ -1,7 +1,7 @@
 // 星星小學堂：離線使用。第一次打開會把整個程式存進裝置；之後打開都用裝置裡的版本（沒網路也能開），
 // 有網路時在背景下載新版，下次打開就是新版。
-const CACHE = 'xxt-8fa0898e35';
-const SIZE = 26891668;
+const CACHE = 'xxt-796a054a55';
+const SIZE = 26896478;
 const CORE = ['index.html', 'kai.woff2', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(CORE.map(u => c.match(u).then(hit => hit || fetch(new Request(u, {cache: 'reload'})).then(r => { if (!r.ok) throw new Error(u); return c.put(u, r); }))))).then(() => self.skipWaiting()));
@@ -22,6 +22,14 @@ self.addEventListener('fetch', e => {
       const net = fetch(new Request('index.html', {cache: 'no-cache'})).then(res => { if (res.ok) c.put('index.html', res.clone()); return res; });
       if (hit) { e.waitUntil(net.catch(() => {})); return hit; }
       return net.catch(() => offlinePage());
+    }));
+    return;
+  }
+  if (url.origin === location.origin && /\/books\/[^/]+$/.test(url.pathname)) {   // 繪本內頁：圖不常變，優先用裝置裡的；json 每次背景更新
+    e.respondWith(caches.open('xmedia').then(async c => {
+      const hit = await c.match(r), net = fetch(r).then(res => { if (res && res.ok) c.put(r, res.clone()); return res; });
+      if (hit) { if (/\.json$/.test(url.pathname)) e.waitUntil(net.catch(() => {})); return hit; }
+      return net.catch(() => new Response('', {status: 504}));
     }));
     return;
   }
