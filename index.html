@@ -1862,7 +1862,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
 .kg-reg{position:absolute;overflow:visible;line-height:1.8em;font-weight:500;color:#273c4b;padding:.15em;display:flex;align-items:flex-start}
 .kg-plate{display:inline-block;max-width:100%;padding:0;filter:drop-shadow(0 0 3px rgba(255,255,255,.95))}
 .kg-is{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .2s,text-shadow .2s}.kg-is.on{color:#d9480f;text-shadow:0 0 .22em rgba(255,226,140,1),0 0 .5em rgba(255,214,102,.85)}.kg-is.on .kg-bop{color:#d9480f}
-.kg-c{display:inline-flex;align-items:center;vertical-align:top;width:1.55em;height:1.8em;white-space:nowrap;line-height:1.1;background:rgba(255,252,238,var(--pa,.97))}
+.kg-c{display:inline-flex;align-items:center;vertical-align:top;width:1.55em;height:1.8em;white-space:nowrap;line-height:1.1;background:rgba(255,252,238,var(--pa,.5))}
 .kg-c.tl{border-top-left-radius:.6em}.kg-c.tr{border-top-right-radius:.6em}.kg-c.bl{border-bottom-left-radius:.6em}.kg-c.br{border-bottom-right-radius:.6em}
 .kg-h{display:inline-block;width:1em;text-align:center}
 .kg-bop{position:relative;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;font-size:var(--zy,.29em);line-height:1.05;width:1.05em;margin-left:.06em;min-height:3.05em;font-weight:400;color:#3b4d7a}
@@ -1947,7 +1947,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = 'xxt-51f270ec1e', upd = document.getElementById('pwa-upd');
+  var BUILD = 'xxt-913ea66db0', upd = document.getElementById('pwa-upd');
   var NEWCACHE = '', NEWSIZE = 0;
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
