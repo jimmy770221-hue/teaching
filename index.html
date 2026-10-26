@@ -80,7 +80,7 @@ p{margin:0 0 8px}
 .gradegrid small{font-size:11px;color:var(--muted)}
 /* learn */
 .learn{display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px}
-body.zy-low .learn{grid-template-columns:350px minmax(0,1fr)}   /* 一二年級加注音後，左邊年級／單元欄加寬 */
+@media (min-width:861px){body.zy-low .learn{grid-template-columns:350px minmax(0,1fr)}}   /* 一二年級加注音後，左邊年級／單元欄加寬 */
 body.zy-low .seg.g6 button{padding-left:2px;padding-right:2px}
 .rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);align-self:start;max-height:calc(100vh - 24px);overflow:auto;background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:14px}
 .seg{display:grid;gap:4px;margin-bottom:8px}
@@ -2096,7 +2096,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = window.XXT_BUILD = 'xxt-4d51b888f7', upd = document.getElementById('pwa-upd');
+  var BUILD = window.XXT_BUILD = 'xxt-4fca1d2cf7', upd = document.getElementById('pwa-upd');
   var NEWCACHE = '', NEWSIZE = 0, TRIES = 0;
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
