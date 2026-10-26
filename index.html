@@ -657,7 +657,7 @@ textarea.work{font:inherit;font-family:var(--f-mono);font-size:14px;width:100%;m
 .gm-keyhint{margin-top:8px;text-align:center;font-size:13px;color:#7a6a4a;opacity:.85}
 
 /* iPad / 舊版 Safari：固定 16:9 舞台，以可見高度（dvh）計算，避免被網址列裁切 */
-@supports (height:100dvh){ .gm-mapview{height:100dvh} .gm-scr{width:min(100vw,calc(100dvh * 16 / 9))} }
+@supports (height:100dvh){ @media (min-width:761px) and (min-aspect-ratio:1/1){ .gm-mapview{height:100dvh} .gm-scr{width:min(100vw,calc(100dvh * 16 / 9))} } }   /* 只用在橫向；直向改為可捲動的直排版 */
 
 /* 闖關地圖：頂欄、模式、世界按鈕與關卡介紹縮小（橫向／平板／電腦） */
 @media (min-width:761px) and (min-aspect-ratio:1/1){
@@ -737,6 +737,17 @@ textarea.work{font:inherit;font-family:var(--f-mono);font-size:14px;width:100%;m
   .gm-battle.w2 .gm-hero,.gm-battle.w2 .gm-mon:not(.fly),.gm-battle.w3 .gm-hero,.gm-battle.w3 .gm-mon:not(.fly){bottom:27%}
   .gm-battle .gm-scene::after{height:38%}
 }
+/* 直向（手機／平板直拿）：闖關地圖改直排，地圖撐滿寬度、隱藏大角色與路標（2026-10-26 全站自動比例） */
+@media (max-width:760px), (max-aspect-ratio:1/1){
+  .gm-scr .gm-dot,.gm-scr .gm-sign,.gm-scr .gm-stop-hero{display:none !important}
+  .gm-scr .gm-map{width:100% !important;box-sizing:border-box}
+  .gm-scr .gm-info{grid-template-columns:1fr;text-align:center;justify-items:center}.gm-scr .gm-info .ach{border:0}
+}
+@media (min-width:761px) and (max-aspect-ratio:1/1){
+  .gm-scr .gm-stop .stone{width:84px;font-size:30px}
+  .gm-scr .gm-stop .nm{font-size:14px !important}
+  .gm-scr .gm-map{gap:28px 10px;padding:64px 12px 18px}
+}
 
 /* ---------- 科目首頁：底圖＋三個立體浮凸的科目按鍵 ---------- */
 .portal{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:-16px;margin-bottom:-64px;min-height:100vh;display:grid;place-items:center;overflow:hidden;background:#9fd3f5;font-family:'Noto Sans TC',sans-serif}
@@ -758,7 +769,7 @@ textarea.work{font:inherit;font-family:var(--f-mono);font-size:14px;width:100%;m
 .pt-soon[hidden]{display:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 /* narrow screens: the picture stays on top and the buttons stack below it, large enough to tap */
-@media (max-width:760px){
+@media (max-width:760px), (max-aspect-ratio:1/1){
   .portal{background:#eaf6ff;display:block;min-height:100vh}
   .portal::before{display:none}
   .pt-stage{width:100%;box-shadow:none}
@@ -793,7 +804,7 @@ textarea.work{font:inherit;font-family:var(--f-mono);font-size:14px;width:100%;m
 .mh-grade:active{transform:translateY(4px);filter:drop-shadow(0 2px 0 rgba(40,60,120,.25)) drop-shadow(0 4px 6px rgba(30,50,110,.2))}
 .mh-stats{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 28px;margin-top:22px;color:#3d5a80;font-size:15px}
 .mh-stats b{font-size:22px;color:#1f4f9a;margin-right:2px}
-@media (max-width:760px){
+@media (max-width:760px), (max-aspect-ratio:1/1){
   .mh-stage{aspect-ratio:1672/330;background-position:center top;background-size:100% auto}
   .mh-back{top:10%;right:1.5%;font-size:11px;padding:.3em .7em;border-width:2px;box-shadow:0 2px 0 #9cc9ee}
   .mh-doors{position:static;display:grid;grid-template-columns:1fr;gap:16px;padding:8px 16px 18px;max-width:460px;margin:0 auto;pointer-events:auto}
@@ -1419,7 +1430,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
 .zhhome2 .hh-grid{row-gap:30px}
 .zhhome2 .mh-stats{color:#6a4a2a;margin-top:30px}.zhhome2 .mh-stats b{color:#b4441c}
 .enhome2 .mh-stats{margin-top:26px}
-@media (max-width:760px){
+@media (max-width:760px), (max-aspect-ratio:1/1){
   .hh-in{padding:0 14px 40px}.hh-head{margin:0 -14px 4px}
   .hh-head{margin-bottom:0}.hh-head .mh-back{position:relative;display:block;top:auto;right:auto;margin:-2px 14px 10px auto;font-size:13px;padding:.3em .9em;border-width:2px;box-shadow:0 3px 0 #9cc9ee}
   .hh-grid{gap:14px}
@@ -1460,7 +1471,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
 .pt-mini:not(.locked):hover{transform:translateY(calc(-.4*var(--cq)))}
 .pt-mini:focus-visible{outline:calc(.35*var(--cq)) solid #1f5fc2;outline-offset:calc(.3*var(--cq))}
 .pt-lock{position:absolute;top:calc(-.9*var(--cq));right:calc(-.4*var(--cq));background:#ff5a4d;color:#fff;font-weight:900;font-size:calc(1.05*var(--cq));padding:.15em .6em;border-radius:999px;border:calc(.2*var(--cq)) solid #fff;box-shadow:0 2px 4px rgba(0,0,0,.25)}
-@media (max-width:760px){
+@media (max-width:760px), (max-aspect-ratio:1/1){
   .pt-cards2{position:static;width:100%;box-sizing:border-box;max-width:520px;margin:-14px auto 0;padding:0 16px 40px;gap:14px}
   .pt-mini{min-height:64px;border-width:3px;border-radius:18px;box-shadow:0 5px 0 var(--edge),0 9px 14px rgba(20,45,90,.28)}
   .pt-mini b{font-size:20px}.pt-mini small{font-size:13px}
@@ -1473,7 +1484,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
 
 
 .pt-mini.pt-sci{--edge:#2a9a58;background:linear-gradient(180deg,#7fe0a0,#3fbf70)}.pt-mini.pt-soc{--edge:#c0562a;background:linear-gradient(180deg,#ffb27a,#f07d3c)}
-@media (max-width:760px){.pt-cards2{max-width:520px;gap:10px;padding:0 12px 40px;grid-template-columns:repeat(3,minmax(0,1fr));left:auto;right:auto}.pt-mini b{font-size:17px}.pt-mini small{font-size:11px}}
+@media (max-width:760px), (max-aspect-ratio:1/1){.pt-cards2{max-width:520px;gap:10px;padding:0 12px 40px;grid-template-columns:repeat(3,minmax(0,1fr));left:auto;right:auto}.pt-mini b{font-size:17px}.pt-mini small{font-size:11px}}
 
 /* ---- 注音索引 ---- */
 .zy-index{display:block}
@@ -1902,6 +1913,51 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   .kg-rd .kg-nav{gap:6px}
 }
 
+/* 平板直向（寬 761px 以上、但畫面是直的）：沿用直向排版，卡片欄寬放大（2026-10-26 全站自動比例） */
+@media (min-width:761px) and (max-aspect-ratio:1/1){
+  .pt-cards{max-width:760px;gap:22px}
+  .pt-cards2{max-width:760px}
+  .mh-doors{max-width:680px}
+  .hh-grid.zh{max-width:820px}
+  .hh-grid.eng{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+/* 幼兒園「大卡＋格子」頁（注音、數字、英文字母）：橫向螢幕時大卡改左右排（左：字與按鈕，右：描寫格），整張卡放得進一個畫面 */
+@media (orientation:landscape){
+  .kg-split{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
+  .kg-big-card .kg-btn{white-space:nowrap}
+  .kg-big-card{display:grid;grid-template-columns:minmax(140px,1fr) minmax(0,min(46vh,340px));column-gap:clamp(10px,2vw,24px);row-gap:8px;align-items:center;justify-items:center}
+  .kg-big-card>*{grid-column:1}
+  .kg-big-card>:last-child{grid-column:2;grid-row:1 / span 5;align-self:center}
+  .kg-big-card .zy-trace .zy-canvas,.kg-big-card .zy-canvas.en-canvas{width:100%;max-width:min(46vh,340px)}
+  .kg-big-card>:last-child{width:100%}
+  .kg-big-card .zy-trace,.kg-big-card .en-canvas,.kg-big-card .zy-canvas{max-width:min(46vh,360px)}
+  .kg-bigsym{font-size:clamp(60px,min(10vw,24vh),200px)}
+  .kg-bignum{font-size:clamp(56px,min(8vw,20vh),180px)}
+  .kg-numzh{font-size:clamp(34px,min(5vw,12vh),100px)}
+  .kg-bigabc{gap:8px}.kg-bigabc span:first-child,.kg-bigabc span:last-child{font-size:clamp(54px,min(7vw,20vh),170px)}
+  .kg-wpic .en-pic{width:clamp(60px,min(10vw,18vh),150px);height:clamp(60px,min(10vw,18vh),150px)}
+  .kg-count img{width:clamp(30px,min(8vw,8vh),84px)}
+  .kg-cell{min-height:clamp(52px,min(12vw,14vh),110px)}
+  .kg-zcell,.kg-ncell{font-size:clamp(28px,min(7vw,8vh),64px)}
+  .kg-acell b{font-size:clamp(26px,min(6vw,7vh),54px)}.kg-acell i{font-size:clamp(22px,min(5vw,6vh),44px)}
+  .kg-detail .kg-nav{margin:8px 0 0}
+}
+/* 繪本頁：手機直向按鈕太多一排放不下時換行 */
+@media (max-width:520px){.kg-rd .kg-readnav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.kg-rd .kg-readnav .kg-btn{padding:7px 4px;font-size:14px}.kg-readnav>:nth-child(1){order:1}.kg-readnav>:nth-child(2){order:2}.kg-readnav>:nth-child(5){order:3}.kg-readnav>:nth-child(3){order:4}.kg-readnav>:nth-child(4){order:5;grid-column:span 2}}
+/* 運筆練習：橫向時畫布高度依可用高度計算，題目、畫布、按鈕放得進一個畫面 */
+@media (orientation:landscape){
+  .kgx-board .kg-canvas{max-height:max(150px,calc(100vh - 260px))}
+}
+@media (max-height:560px) and (orientation:landscape){
+  .kgp-trace .kgx-title img{height:46px}
+  .kgp-trace .kgx-bar .kgx-btn img{height:36px}
+  .kgp-trace .kg-trname b{font-size:24px}.kgp-trace .kg-trname span{font-size:14px}
+  .kgp-trace .kg-trace{gap:4px}
+  .kgx-board .kg-canvas{max-height:max(120px,calc(100vh - 272px))}
+  .kgp-trace .kgx-nav{margin:4px 0}.kgp-trace .kgx-nav .kgx-btn img{height:38px}.kgp-trace .kg-prog{max-width:560px}.kgp-trace .kg-stars{font-size:24px}
+  .kgx-coach{width:110px}
+}
+
 .xload{min-height:50vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-size:20px;font-weight:700;color:#8a7a6a}.xload-dot{width:46px;height:46px;border-radius:50%;border:6px solid #f1dfb5;border-top-color:#e0517f;animation:xspin .8s linear infinite}@keyframes xspin{to{transform:rotate(360deg)}}
 .xe-ins{box-sizing:border-box;max-width:100%}
 .xe-ins-box{padding:12px 16px;margin:10px 0;border:3px solid #ffd54f;border-radius:16px;background:#fffde7;font-size:20px;line-height:1.6;color:#3e2723;white-space:pre-wrap}
@@ -2000,7 +2056,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = window.XXT_BUILD = 'xxt-3129a39250', upd = document.getElementById('pwa-upd');
+  var BUILD = window.XXT_BUILD = 'xxt-ce41f762f1', upd = document.getElementById('pwa-upd');
   var NEWCACHE = '', NEWSIZE = 0, TRIES = 0;
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
