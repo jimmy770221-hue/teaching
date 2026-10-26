@@ -1997,6 +1997,11 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
 .zyvt{display:inline}
 .opts button.zyo .zyb.zyv{font-size:1em}
 .opts button .zyb.zyv{font-size:1.1em}
+/* 注音選項：直式注音縮小，放得進選項格子（2026-10-26） */
+.opts button.zyo{font-size:23px;line-height:1.2;padding:.7em .6em .45em}
+.opts button.zyo .zyb.zyv .zyb-s{font-size:1.05em}
+.opts button.zyo .zyb.zyv .zyb-l{top:-.6em;font-size:1em}
+.zyb.zyv{padding-right:.4em}
 
 .xload{min-height:50vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-size:20px;font-weight:700;color:#8a7a6a}.xload-dot{width:46px;height:46px;border-radius:50%;border:6px solid #f1dfb5;border-top-color:#e0517f;animation:xspin .8s linear infinite}@keyframes xspin{to{transform:rotate(360deg)}}
 .xe-ins{box-sizing:border-box;max-width:100%}
@@ -2096,7 +2101,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = window.XXT_BUILD = 'xxt-4fca1d2cf7', upd = document.getElementById('pwa-upd');
+  var BUILD = window.XXT_BUILD = 'xxt-002b29a332', upd = document.getElementById('pwa-upd');
   var NEWCACHE = '', NEWSIZE = 0, TRIES = 0;
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
