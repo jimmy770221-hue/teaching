@@ -1979,7 +1979,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
 
 /* 英文字母例字卡：右上角喇叭，提示可以點來聽 */
 .kg-word{position:relative}
-.kg-wspk{position:absolute;top:8px;right:8px;width:clamp(30px,4vw,42px);height:clamp(30px,4vw,42px);display:flex;align-items:center;justify-content:center;border-radius:50%;background:#2f80ed;box-shadow:0 3px 0 #1b56a8;animation:kgspk 1.6s ease-in-out infinite}
+.kg-wspk{position:absolute;bottom:8px;right:8px;width:clamp(30px,4vw,42px);height:clamp(30px,4vw,42px);display:flex;align-items:center;justify-content:center;border-radius:50%;background:#2f80ed;box-shadow:0 3px 0 #1b56a8;animation:kgspk 1.6s ease-in-out infinite}
 .kg-wspk svg,.kg-wspk img{width:70%;height:70%}
 @keyframes kgspk{50%{transform:scale(1.12)}}
 @media (prefers-reduced-motion:reduce){.kg-wspk{animation:none}}
@@ -2083,7 +2083,7 @@ h2 .h2-ava{width:40px;height:40px;margin-right:6px;margin-top:-6px}
   var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); ev = e; if (!standalone) btn.hidden = false; });
   // 新版偵測：回到前景或每 30 分鐘檢查 GitHub 上的 sw.js 版本，不同就顯示更新按鈕
-  var BUILD = window.XXT_BUILD = 'xxt-01b3c1d502', upd = document.getElementById('pwa-upd');
+  var BUILD = window.XXT_BUILD = 'xxt-4befaeb362', upd = document.getElementById('pwa-upd');
   var NEWCACHE = '', NEWSIZE = 0, TRIES = 0;
   function check(){
     if (!/^https?:$/.test(location.protocol) || !navigator.onLine) return;
