@@ -1,8 +1,8 @@
 // 星星小學堂：離線使用。第一次打開會把整個程式存進裝置；之後打開都用裝置裡的版本（沒網路也能開），
 // 有網路時在背景下載新版，下次打開就是新版。
-const CACHE = 'xxt-1a552b4c33';
-const SIZE = 1390800;
-const XF = ["x/c2d1a7e47263.bin", "x/8c5c01346e59.bin", "x/5d60be7ca8f6.bin", "x/7837221435e8.bin", "x/58811e2f6059.bin", "x/870e5b97053f.bin", "x/19ad534a0051.bin", "x/3284876879bc.bin", "x/ffcf3ac16815.bin", "x/3c76fff4e8d8.bin"];
+const CACHE = 'xxt-70b18c4247';
+const SIZE = 1365985;
+const XF = ["x/01f3fe0040cc.bin", "x/340d379f87fe.bin", "x/0babcb88eb58.bin", "x/e2ae832cd858.bin", "x/8b1560d4b841.bin", "x/7110c0273a16.bin", "x/bac0939a31fd.bin", "x/0e17d20d97a5.bin", "x/cbdf9fd7e347.bin", "x/b6677bebaec7.bin"];
 const CORE = ['index.html', 'kai.woff2', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open('xmedia').then(c => Promise.all(XF.map(u => c.match(u).then(hit => hit || fetch(u).then(r => { if (r.ok) return c.put(u, r); }))))).catch(() => {}).then(() => caches.open(CACHE)).then(c => Promise.all(CORE.map(u => c.match(u).then(hit => hit || fetch(new Request(u === 'index.html' ? 'index.html?t=' + Date.now() : u, {cache: 'reload'})).then(r => { if (!r.ok) throw new Error(u); return c.put(u, r); }))))).then(() => self.skipWaiting()));
